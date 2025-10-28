@@ -1,5 +1,5 @@
 import fs from "fs/promises"
-import { PRODUCTS_PATH } from "../const/const.js"
+import { PRODUCTS_PATH } from "../const/constantes.js"
 
 class ProductsManager {
     constructor(){
@@ -115,3 +115,5 @@ class ProductsManager {
         }
     }
 }
+
+export default ProductsManager

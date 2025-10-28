@@ -1,5 +1,5 @@
 import fs from "fs/promises"
-import { CARTS_PATH } from "../const/const.js"
+import { CARTS_PATH } from "../const/constantes.js"
 
 class CartsManager {
     constructor(){
@@ -61,3 +61,5 @@ class CartsManager {
         }
     }
 }
+
+export default CartsManager

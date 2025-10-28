@@ -1,7 +1,7 @@
 import express from "express"
-import ProductsManager from './src/class/ProductManager.js'
-import CartsManager from './src/class/CartManager.js'
-import { PORT } from "./src/const/const.js"
+import ProductsManager from './src/class/ProductsManager.js'
+import CartsManager from './src/class/CartsManager.js'
+import { PORT } from "./src/const/constantes.js"
 
 
 const productManager = new ProductsManager()
