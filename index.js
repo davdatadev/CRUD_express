@@ -121,6 +121,22 @@ class CartsManager {
         }
 
     }
+
+    async listarProductos(cartId){
+        try {
+            const data = await fs.readFile(CARTS_PATH, { encoding : "utf-8" })
+            const carts = JSON.parse(data)
+            const carritoEncontrado = carts.find(cart => cart.id == cartId)
+
+            if (!carritoEncontrado) {
+                return null
+            }
+            // asegurando de que siempre retorne array
+            return carritoEncontrado.products || []
+        } catch (error) {
+            console.error("Error leyendo un producto:", error)
+        }
+    }
 }
 
 const productManager = new ProductsManager()
@@ -154,6 +170,13 @@ app.get("/products/:pid", async (req, res) => {
     try {
         const { pid } = req.params
         const producto = await productManager.leerUnProducto(pid)
+        if (!producto) {
+            return res.status(404).json({
+                mensaje: "GET",
+                error: `No se encontró ningún producto con el id ${pid}`
+            })
+        }
+        
         res.status(201).json({
             mensaje: "GET",
             product: producto
@@ -198,6 +221,40 @@ app.post("/carts", async (req, res) => {
         })
     } catch (error) {
         
+    }
+})
+
+app.get("/carts/:cid", async (req, res) => {
+    console.log("Listar productos de carrito especifico")
+    try {
+        const { cid } = req.params
+        const productosEnCarrito  = await cartManager.listarProductos(cid)
+        if (!productosEnCarrito ) {
+            return res.status(404).json({
+                mensaje: "GET",
+                error: `No se encontró ningún carrito con el id ${cid}`
+            })
+        }
+
+        let productosCompletos = []
+        for (const prod of productosEnCarrito) {
+            const producto = await productManager.leerUnProducto(prod.product)
+            if (producto) {
+                const productoAgregar = {
+                    ...producto,
+                    quantity: prod.quantity
+                }
+                productosCompletos.push(productoAgregar)
+            }
+        }
+
+        res.status(200).json({
+            mensaje: "GET",
+            product: productosCompletos
+        })
+    } catch (error) {
+        console.log("Error buscando el carrito")
+        res.status(500).json({ mensaje: "GET", error: `Error al buscar el carrito` })
     }
 })
 
