@@ -1,167 +1,8 @@
 import express from "express"
-import fs from "fs/promises"
+import ProductsManager from './src/class/ProductManager.js'
+import CartsManager from './src/class/CartManager.js'
+import { PORT } from "./src/const/const.js"
 
-//Constantes
-const PORT = 5000
-const PRODUCTS_PATH = "src/db/products.json"
-const CARTS_PATH = "src/db/carts.json"
-
-//Clases
-class ProductsManager {
-    constructor(){
-        this.products = []
-    }
-
-    async leerProductos() {
-        try {
-            const data = await fs.readFile(PRODUCTS_PATH, { encoding : "utf-8" })
-            this.products = JSON.parse(data)
-            return this.products
-        }catch(error){
-            console.log(`Hubo un error leyendo el json: ${error}`)
-        }
-    }
-
-    async leerUnProducto(productId) {
-        try {
-            const productos = await this.leerProductos()
-            const productoEncontrado = productos.find(prod => prod.id == productId)
-
-            if (!productoEncontrado) {
-                return null
-            }
-
-            return productoEncontrado
-        } catch (error) {
-            console.error("Error leyendo un producto:", error)
-        }
-    }
-
-    async crearProducto(nuevoProducto) {
-        try{
-            // Leer Productos
-            const productos = await this.leerProductos()
-            
-            // Validar campos no strings
-            if (nuevoProducto.price && typeof nuevoProducto.price !== "number") {
-                console.log("El campo 'price' debe ser un número")
-            }
-            if (nuevoProducto.status && typeof nuevoProducto.status !== "boolean") {
-                console.log("El campo 'status' debe ser un valor booleano (true/false)")
-            }
-            if (nuevoProducto.stock && typeof nuevoProducto.stock !== "number") {
-                console.log("El campo 'stock' debe ser un número")
-            }
-
-            let nuevoId
-            do {
-                nuevoId = Date.now().toString()
-            } while (productos.some(producto => producto.id === nuevoId))
-            
-            nuevoProducto.id = nuevoId
-            
-            // Organizar id de primero
-            const productoAgregar = {
-                id:nuevoProducto.id,
-                ...nuevoProducto
-            }
-            
-            productos.push(productoAgregar)
-
-            await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
-            return productoAgregar
-
-        }catch(error){
-            console.error("Hubo un error", error)
-        }
-    }
-
-    async actualizarProducto(productId, camposActualizados){
-        try {
-            const productos = await this.leerProductos()
-            const productIndex = productos.findIndex(prod => prod.id == productId)
-
-            if (productIndex === -1) {
-                return null
-            }
-
-            delete camposActualizados.id
-
-            const productoActualizado = {
-                ...productos[productIndex],
-                ...camposActualizados
-            }
-
-            productos[productIndex] = productoActualizado
-            await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
-
-            return productoActualizado
-        } catch (error) {
-            console.error("Error actualizando un producto:", error)
-        }
-    }
-}
-
-class CartsManager {
-    constructor(){
-        this.carts = []
-    }
-
-    async leerCarritos() {
-        try {
-            const data = await fs.readFile(CARTS_PATH, { encoding : "utf-8" })
-            this.carts = JSON.parse(data)
-            return this.carts
-        }catch(error){
-            console.log(`Hubo un error leyendo el json: ${error}`)
-        }
-    }
-
-    async agregarCarrito(nuevoCarrito){
-        try {
-            // Leer carritos
-            const carritos = await this.leerCarritos()
-            
-            let nuevoId
-
-            do {
-                nuevoId = Date.now().toString()
-            } while (carritos.some(cart => cart.id === nuevoId))
-            
-            nuevoCarrito.id = nuevoId
-
-            const carritoAgregar = {
-                id:nuevoCarrito.id,
-                ...nuevoCarrito
-            }
-            
-            carritos.push(carritoAgregar)
-
-            await fs.writeFile(CARTS_PATH, JSON.stringify(carritos, null, 2))
-            return carritoAgregar
-
-        } catch (error) {
-            
-        }
-
-    }
-
-    async listarProductos(cartId){
-        try {
-            const data = await fs.readFile(CARTS_PATH, { encoding : "utf-8" })
-            const carts = JSON.parse(data)
-            const carritoEncontrado = carts.find(cart => cart.id == cartId)
-
-            if (!carritoEncontrado) {
-                return null
-            }
-            // asegurando de que siempre retorne array
-            return carritoEncontrado.products || []
-        } catch (error) {
-            console.error("Error leyendo un producto:", error)
-        }
-    }
-}
 
 const productManager = new ProductsManager()
 const cartManager = new CartsManager()
@@ -247,10 +88,28 @@ app.put("/products/:pid", async(req, res) => {
         res.status(200).json({
             mensaje: "PUT",
             status: "Producto actualizado correctamente",
-            producto
+            producto: producto
         })
     } catch (error) {
         res.status(500).json({ mensaje: "PUT", error: "Error al actualizar el producto" })
+    }
+})
+
+app.delete("/products/:pid", async(req, res) => {
+    try {
+        const producto = await productManager.eliminarProducto(req.params.pid)
+        if (!producto){
+            return res.status(404).json({ mensaje: "DELETE", error: "Producto no encontrado" })
+        }
+
+        res.status(200).json({
+            mensaje: "DELETE",
+            status: "Producto eliminado correctamente",
+            producto: producto
+        })
+
+    } catch (error) {
+        res.status(500).json({ mensaje: "DELETE", error: "Error al eliminar el producto" })
     }
 })
 
@@ -265,7 +124,7 @@ app.post("/carts", async (req, res) => {
         res.status(201).json({
             mensaje: "POST",
             status: "Carrito Creado correctamente",
-            producto: estadoCarrito
+            carrito: estadoCarrito
         })
     } catch (error) {
         
@@ -298,7 +157,7 @@ app.get("/carts/:cid", async (req, res) => {
 
         res.status(200).json({
             mensaje: "GET",
-            product: productosCompletos
+            carrito: productosCompletos
         })
     } catch (error) {
         console.log("Error buscando el carrito")
