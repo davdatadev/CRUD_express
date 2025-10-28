@@ -24,8 +24,7 @@ class ProductsManager {
 
     async leerUnProducto(productId) {
         try {
-            const data = await this.leerProductos()
-            const productos = JSON.parse(data)
+            const productos = await this.leerProductos()
             const productoEncontrado = productos.find(prod => prod.id == productId)
 
             if (!productoEncontrado) {
@@ -89,16 +88,16 @@ class ProductsManager {
             delete camposActualizados.id
 
             const productoActualizado = {
-                ...productos[index],
+                ...productos[productIndex],
                 ...camposActualizados
             }
 
-            productos[index] = productoActualizado
+            productos[productIndex] = productoActualizado
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
 
             return productoActualizado
         } catch (error) {
-            
+            console.error("Error actualizando un producto:", error)
         }
     }
 }
@@ -232,9 +231,10 @@ app.post("/products", async (req, res) => {
 })
 
 app.put("/products/:pid", async(req, res) => {
+    console.log("Actualizar producto")
     try {
         const nuevosDatos = req.body
-        if (!nuevosDatos) {
+        if (!nuevosDatos || Object.keys(nuevosDatos).length === 0) {
             return res.status(400).json({  mensaje: "PUT", error: "No se recibió ningún producto" })
         }
 
