@@ -1,0 +1,93 @@
+[
+  {
+    "id": "1",
+    "title": "Escritorio Altura Ajustable 73-118 Cm Electrico",
+    "description": "Combinación perfecta de funcionalidad y durabilidad. Sistema anticolisión detecta objetos en la trayectoria para evitar colisiones cuando se gradúa la altura.",
+    "code": "OFI-001",
+    "price": 250,
+    "status": true,
+    "stock": 15,
+    "category": "Oficina",
+    "thumbnails": [
+      "images/escritorio-ajustable.jpg"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Lámpara De Escritorio Airlonv Led",
+    "description": "Modo de atenuación continua: ofrece cambio de temperatura de color (2700K-6500K) y atenuación continua (1% - 100%).",
+    "code": "OFI-002",
+    "price": 50,
+    "status": true,
+    "stock": 30,
+    "category": "Oficina",
+    "thumbnails": [
+      "images/lampara-led.jpg"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Xbox Series X Standard 1TB Color Negro",
+    "description": "Xbox Series X, la Xbox más rápida y potente que nunca.",
+    "code": "CON-001",
+    "price": 550,
+    "status": true,
+    "stock": 10,
+    "category": "Consolas",
+    "thumbnails": [
+      "images/xbox-series-x.jpg"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Sony PlayStation 5 Pro 2TB Digital",
+    "description": "Consola de última generación de Sony con almacenamiento de 2TB y diseño digital.",
+    "code": "CON-002",
+    "price": 600,
+    "status": true,
+    "stock": 8,
+    "category": "Consolas",
+    "thumbnails": [
+      "images/ps5-pro.jpg"
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Juego De Cuchillos Victorinox Swiss Classic",
+    "description": "Cuchillos de chef de primera calidad: como maestro de tu cocina, te mereces los accesorios adecuados para expresar tu creatividad.",
+    "code": "COC-001",
+    "price": 150,
+    "status": true,
+    "stock": 25,
+    "category": "Cocina",
+    "thumbnails": [
+      "images/cuchillos-victorinox.jpg"
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Juego de Sartenes de Acero Inoxidable De Triple Cobertura",
+    "description": "El set de sartenes de acero inoxidable DELARLO Tri-Ply está diseñado para ofrecer un rendimiento profesional en cualquier tipo de cocina.",
+    "code": "COC-002",
+    "price": 200,
+    "status": true,
+    "stock": 20,
+    "category": "Cocina",
+    "thumbnails": [
+      "images/sartenes-acero.jpg"
+    ]
+  },
+  {
+    "id": "1761535893309",
+    "title": "Mouse inalámbrico Logitech M720",
+    "description": "Mouse ergonómico con conexión Bluetooth y receptor USB.",
+    "code": "MOU-002",
+    "price": 120,
+    "status": true,
+    "stock": 30,
+    "category": "Oficina",
+    "thumbnails": [
+      "images/mouse-logitech.jpg"
+    ]
+  }
+]
