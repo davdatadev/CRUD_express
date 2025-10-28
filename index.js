@@ -4,6 +4,7 @@ import fs from "fs/promises"
 //Constantes
 const PORT = 5000
 const PRODUCTS_PATH = "src/db/products.json"
+const CARTS_PATH = "src/db/carts.json"
 
 //Clases
 class ProductsManager {
@@ -69,7 +70,7 @@ class ProductsManager {
             productos.push(productoAgregar)
 
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
-            return nuevoProducto
+            return productoAgregar
 
         }catch(error){
             console.error("Hubo un error", error)
@@ -77,7 +78,53 @@ class ProductsManager {
     }
 }
 
+class CartsManager {
+    constructor(){
+        this.carts = []
+    }
+
+    async leerCarritos() {
+        try {
+            const data = await fs.readFile(CARTS_PATH, { encoding : "utf-8" })
+            this.carts = JSON.parse(data)
+            return this.carts
+        }catch(error){
+            console.log(`Hubo un error leyendo el json: ${error}`)
+        }
+    }
+
+    async agregarCarrito(nuevoCarrito){
+        try {
+            // Leer carritos
+            const carritos = await this.leerCarritos()
+            
+            let nuevoId
+
+            do {
+                nuevoId = Date.now().toString()
+            } while (carritos.some(cart => cart.id === nuevoId))
+            
+            nuevoCarrito.id = nuevoId
+
+            const carritoAgregar = {
+                id:nuevoCarrito.id,
+                ...nuevoCarrito
+            }
+            
+            carritos.push(carritoAgregar)
+
+            await fs.writeFile(CARTS_PATH, JSON.stringify(carritos, null, 2))
+            return carritoAgregar
+
+        } catch (error) {
+            
+        }
+
+    }
+}
+
 const productManager = new ProductsManager()
+const cartManager = new CartsManager()
 
 // Crear servidor
 const app = express()
@@ -137,9 +184,18 @@ app.post("/products", async (req, res) => {
 })
 
 app.post("/carts", async (req, res) => {
-    console.log("Crear pedido en carro")
+    console.log("Agregar pedido en carro")
     try {
-        
+        const nuevoCarrito = req.body
+        if (!nuevoCarrito) {
+            return res.status(400).json({  mensaje: "GET", error: "No se recibió ningún carrito" })
+        }
+        const estadoCarrito = await cartManager.agregarCarrito(nuevoCarrito)
+        res.status(201).json({
+            mensaje: "POST",
+            status: "Carrito Creado correctamente",
+            producto: estadoCarrito
+        })
     } catch (error) {
         
     }
