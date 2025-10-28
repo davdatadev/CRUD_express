@@ -24,7 +24,7 @@ class ProductsManager {
 
     async leerUnProducto(productId) {
         try {
-            const data = await fs.readFile(PRODUCTS_PATH, { encoding : "utf-8" })
+            const data = await this.leerProductos()
             const productos = JSON.parse(data)
             const productoEncontrado = productos.find(prod => prod.id == productId)
 
@@ -74,6 +74,31 @@ class ProductsManager {
 
         }catch(error){
             console.error("Hubo un error", error)
+        }
+    }
+
+    async actualizarProducto(productId, camposActualizados){
+        try {
+            const productos = await this.leerProductos()
+            const productIndex = productos.findIndex(prod => prod.id == productId)
+
+            if (productIndex === -1) {
+                return null
+            }
+
+            delete camposActualizados.id
+
+            const productoActualizado = {
+                ...productos[index],
+                ...camposActualizados
+            }
+
+            productos[index] = productoActualizado
+            await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
+
+            return productoActualizado
+        } catch (error) {
+            
         }
     }
 }
@@ -192,7 +217,7 @@ app.post("/products", async (req, res) => {
     try{
         const nuevoProducto = req.body
         if (!nuevoProducto) {
-            return res.status(400).json({  mensaje: "GET", error: "No se recibió ningún producto" })
+            return res.status(400).json({  mensaje: "POST", error: "No se recibió ningún producto" })
         }
         const estadoProducto = await productManager.crearProducto(nuevoProducto)
         res.status(201).json({
@@ -203,6 +228,29 @@ app.post("/products", async (req, res) => {
     }catch(error){
         console.log("Error", error)
         res.status(500).json({ mensaje: "POST", error: "Error al crear el producto" })
+    }
+})
+
+app.put("/products/:pid", async(req, res) => {
+    try {
+        const nuevosDatos = req.body
+        if (!nuevosDatos) {
+            return res.status(400).json({  mensaje: "PUT", error: "No se recibió ningún producto" })
+        }
+
+        const producto = await productManager.actualizarProducto(req.params.pid, nuevosDatos)
+
+        if (!producto){
+            return res.status(404).json({ mensaje: "PUT", error: "Producto no encontrado" })
+        }
+
+        res.status(200).json({
+            mensaje: "PUT",
+            status: "Producto actualizado correctamente",
+            producto
+        })
+    } catch (error) {
+        res.status(500).json({ mensaje: "PUT", error: "Error al actualizar el producto" })
     }
 })
 
