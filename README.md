@@ -17,18 +17,19 @@ Utiliza archivos JSON como base de datos local.
 
 ## Estructura del proyecto
 ```
-app.js
+
 └── src/
-├── class/
-│ ├── ProductsManager.js
-│ └── CartsManager.js
-│
-├── db/
-│ ├── products.json
-│ └── carts.json
-│
-├── const/
-  └── constantes.js
+    ├── app.js
+    ├── class/
+    │   ├── ProductsManager.js
+    │   └── CartsManager.js
+    │
+    ├── db/
+    │   ├── products.json
+    │   └── carts.json
+    │
+    └── const/
+        └── constantes.js
 ```
 
 ## Funcionalidades
