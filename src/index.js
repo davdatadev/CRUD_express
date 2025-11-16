@@ -1,14 +1,15 @@
 import express from "express"
-import ProductsManager from './src/class/ProductsManager.js'
-import CartsManager from './src/class/CartsManager.js'
-import { PORT } from "./src/const/constantes.js"
-
+import ProductsManager from './class/ProductsManager.js'
+import CartsManager from './class/CartsManager.js'
+import { PORT } from "./const/constantes.js"
 
 const productManager = new ProductsManager()
 const cartManager = new CartsManager()
 
 // Crear servidor
 const app = express()
+
+// Middleware
 app.use(express.json())
 
 // Endpoints
@@ -116,14 +117,10 @@ app.delete("/products/:pid", async(req, res) => {
 app.post("/carts", async (req, res) => {
     console.log("Agregar pedido en carro")
     try {
-        const nuevoCarrito = req.body
-        if (!nuevoCarrito) {
-            return res.status(400).json({  mensaje: "GET", error: "No se recibió ningún carrito" })
-        }
-        const estadoCarrito = await cartManager.agregarCarrito(nuevoCarrito)
+        const estadoCarrito = await cartManager.crearCarrito()
         res.status(201).json({
             mensaje: "POST",
-            status: "Carrito Creado correctamente",
+            status: "Carrito creado correctamente",
             carrito: estadoCarrito
         })
     } catch (error) {
@@ -164,6 +161,19 @@ app.get("/carts/:cid", async (req, res) => {
         res.status(500).json({ mensaje: "GET", error: `Error al buscar el carrito` })
     }
 })
+
+// Agregar producto a carrito
+app.post("/carts/:cid/product/:pid", async (req, res) => {
+    try {
+        const cartId = req.params.cid
+        const productId = req.params.pid
+
+    } catch (error) {
+        console.log("Error", error)
+        res.status(500).json({ mensaje: "POST", error: "Error al agregar producto a carrito" })
+    }
+}
+)
 
 app.listen(PORT, () => {
     console.log(`Servidor ON, corriendo en el puerto ${PORT}`)

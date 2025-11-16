@@ -16,7 +16,7 @@ class CartsManager {
         }
     }
 
-    async agregarCarrito(nuevoCarrito){
+    async crearCarrito(nuevoCarrito){
         try {
             // Leer carritos
             const carritos = await this.leerCarritos()
@@ -29,18 +29,18 @@ class CartsManager {
             
             nuevoCarrito.id = nuevoId
 
-            const carritoAgregar = {
+            const carritoNuevo = {
                 id:nuevoCarrito.id,
-                ...nuevoCarrito
+                products: []
             }
             
-            carritos.push(carritoAgregar)
+            carritos.push(carritoNuevo)
 
             await fs.writeFile(CARTS_PATH, JSON.stringify(carritos, null, 2))
-            return carritoAgregar
+            return carritoNuevo
 
         } catch (error) {
-            
+            console.error("Error creando nuevo carrito:", error)
         }
 
     }
