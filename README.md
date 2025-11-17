@@ -19,7 +19,7 @@ Utiliza archivos JSON como base de datos local.
 ```
 
 └── src/
-    ├── app.js
+    ├── index.js
     ├── class/
     │   ├── ProductsManager.js
     │   └── CartsManager.js
