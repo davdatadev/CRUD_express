@@ -1,14 +1,8 @@
 import express from "express"
-import ProductsManager from './class/ProductsManager.js'
-import CartsManager from './class/CartsManager.js'
 import { PORT } from "./const/constantes.js"
-import { rootRouter } from "./routes/root.route.js"
-import { productsRouter } from "./routes/products.route.js"
-import { cartsRouter } from "./routes/carts.route.js"
-
-// Instanciar managers
-const productManager = new ProductsManager()
-const cartManager = new CartsManager()
+import rootRouter from "./routes/root.route.js"
+import productsRouter from "./routes/products.route.js"
+import cartsRouter from "./routes/carts.route.js"
 
 // Crear servidor
 const app = express()

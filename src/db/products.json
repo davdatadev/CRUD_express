@@ -69,9 +69,9 @@
     "title": "Juego de Sartenes de Acero Inoxidable De Triple Cobertura",
     "description": "El set de sartenes de acero inoxidable DELARLO Tri-Ply está diseñado para ofrecer un rendimiento profesional en cualquier tipo de cocina.",
     "code": "COC-002",
-    "price": 350,
+    "price": 400,
     "status": true,
-    "stock": 99,
+    "stock": 50,
     "category": "Cocina",
     "thumbnails": [
       "images/sartenes-acero.jpg"

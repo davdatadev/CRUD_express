@@ -1,6 +1,9 @@
-import { express } from "express"
+import express from "express"
+import ProductsManager from '../class/ProductsManager.js'
 
-export const router = express.Router()
+const router = express.Router()
+
+const productManager = new ProductsManager()
 
 router.get("/", async (req, res) => {
     console.log("Listar productos")
@@ -98,3 +101,5 @@ router.delete("/:pid", async(req, res) => {
         res.status(500).json({ mensaje: "DELETE", error: "Error al eliminar el producto" })
     }
 })
+
+export default router
