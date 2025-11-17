@@ -1,11 +1,5 @@
-import express from "express"
-import CartsManager from '../class/CartsManager.js'
-
-const router = express.Router()
-const cartManager = new CartsManager()
-
-router.post("/", async (req, res) => {
-    console.log("Agregar pedido en carro")
+export const createCart = async (req, res) => {
+    console.log("Crear carrito")
     try {
         const estadoCarrito = await cartManager.crearCarrito()
         res.status(201).json({
@@ -16,9 +10,9 @@ router.post("/", async (req, res) => {
     } catch (error) {
         
     }
-})
+}
 
-router.get("/:cid", async (req, res) => {
+export const getCartById = async (req, res) => {
     console.log("Listar productos de carrito especifico")
     try {
         const { cid } = req.params
@@ -50,10 +44,9 @@ router.get("/:cid", async (req, res) => {
         console.log("Error buscando el carrito")
         res.status(500).json({ mensaje: "GET", error: `Error al buscar el carrito` })
     }
-})
+}
 
-// Agregar producto a carrito
-router.post("/:cid/product/:pid", async (req, res) => {
+export const addProductToCart = async (req, res) => {
     try {
         const cartId = req.params.cid
         const productId = req.params.pid
@@ -63,6 +56,3 @@ router.post("/:cid/product/:pid", async (req, res) => {
         res.status(500).json({ mensaje: "POST", error: "Error al agregar producto a carrito" })
     }
 }
-)
-
-export default router

@@ -1,8 +1,8 @@
 import express from "express"
 import { PORT } from "./const/constantes.js"
-import rootRouter from "./routes/root.route.js"
-import productsRouter from "./routes/products.route.js"
-import cartsRouter from "./routes/carts.route.js"
+import rootRouter from "./routes/root.routes.js"
+import productsRouter from "./routes/products.routes.js"
+import cartsRouter from "./routes/carts.routes.js"
 
 // Crear servidor
 const app = express()
@@ -15,6 +15,12 @@ app.use("/", rootRouter)
 app.use("/products", productsRouter)
 
 app.use("/carts", cartsRouter)
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).json({ mensaje: "Error interno del servidor" })
+})
 
 // Iniciar servidor
 

@@ -1,11 +1,5 @@
-import express from "express"
-import ProductsManager from '../class/ProductsManager.js'
 
-const router = express.Router()
-
-const productManager = new ProductsManager()
-
-router.get("/", async (req, res) => {
+ export const listProducts = async (req, res) => {
     console.log("Listar productos")
     try{
         const productos = await productManager.leerProductos()
@@ -17,9 +11,9 @@ router.get("/", async (req, res) => {
         console.log("Error")
         res.status(500).json({ mensaje: "GET", error: "Error al listar los productos" })
     }
-})
+}
 
-router.get("/:pid", async (req, res) => {
+export const getProductById = async (req, res) => {
     console.log("Buscar producto")
     try {
         const { pid } = req.params
@@ -39,9 +33,9 @@ router.get("/:pid", async (req, res) => {
         console.log("Error buscando el producto")
         res.status(500).json({ mensaje: "GET", error: `Error al buscar el producto` })
     }
-})
+}
 
-router.post("/", async (req, res) => { // { "title": "Mouse inalámbrico Logitech M720", "description": "Mouse ergonómico con conexión Bluetooth y receptor USB.", "code": "MOU-002", "price": 120, "status": true, "stock": 30, "category": "Oficina", "thumbnails": ["images/mouse-logitech.jpg"] }
+export const createProduct = async (req, res) => { // { "title": "Mouse inalámbrico Logitech M720", "description": "Mouse ergonómico con conexión Bluetooth y receptor USB.", "code": "MOU-002", "price": 120, "status": true, "stock": 30, "category": "Oficina", "thumbnails": ["images/mouse-logitech.jpg"] }
     console.log("Crear producto")
     try{
         const nuevoProducto = req.body
@@ -58,9 +52,9 @@ router.post("/", async (req, res) => { // { "title": "Mouse inalámbrico Logitec
         console.log("Error", error)
         res.status(500).json({ mensaje: "POST", error: "Error al crear el producto" })
     }
-})
+}
 
-router.put("/:pid", async(req, res) => { // { "price": 350, "stock": 99}
+export const updateProduct = async(req, res) => { // { "price": 350, "stock": 99}
     console.log("Actualizar producto")
     try {
         const nuevosDatos = req.body
@@ -82,9 +76,9 @@ router.put("/:pid", async(req, res) => { // { "price": 350, "stock": 99}
     } catch (error) {
         res.status(500).json({ mensaje: "PUT", error: "Error al actualizar el producto" })
     }
-})
+}
 
-router.delete("/:pid", async(req, res) => {
+export const deleteProduct = async(req, res) => {
     try {
         const producto = await productManager.eliminarProducto(req.params.pid)
         if (!producto){
@@ -100,6 +94,4 @@ router.delete("/:pid", async(req, res) => {
     } catch (error) {
         res.status(500).json({ mensaje: "DELETE", error: "Error al eliminar el producto" })
     }
-})
-
-export default router
+}
