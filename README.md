@@ -23,13 +23,23 @@ Utiliza archivos JSON como base de datos local.
     ├── class/
     │   ├── ProductsManager.js
     │   └── CartsManager.js
-    │
+    ├── controllers/
+    │   ├── root.controller.js
+    │   ├── carts.controller.js
+    │   └── products.controller.js
+    ├── routes/
+    │   ├── root.routes.js
+    │   ├── carts.routes.js
+    │   └── products.routes.js
     ├── db/
     │   ├── products.json
     │   └── carts.json
-    │
-    └── const/
-        └── constantes.js
+    ├── const/
+    │   └── constantes.js
+    └── views/
+        ├── layouts/    
+        ├── partials/
+        └── home.handlebars
 ```
 
 ## Funcionalidades
