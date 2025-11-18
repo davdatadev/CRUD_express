@@ -10,8 +10,10 @@ Utiliza archivos JSON como base de datos local.
 - CRUD completo para productos (crear, leer, actualizar y eliminar).
 - Manejo de carritos con productos asociados.
 - IDs autogenerados y únicos para cada registro.
-- Estructura modular con clases separadas y constantes centralizadas.
+- Estructura modular con clases, rutas, controladores, vistas y constantes centralizadas.
 - Persistencia en archivos JSON.
+- Implementación de servidor WebSocket con la librería socket.io
+- Actulización en tiempo real del listado de productos al agregar eliminar o realizar alguna actualización.
 
 ---
 
@@ -23,6 +25,8 @@ Utiliza archivos JSON como base de datos local.
     ├── class/
     │   ├── ProductsManager.js
     │   └── CartsManager.js
+    ├── const/
+    │   └── constantes.js
     ├── controllers/
     │   ├── root.controller.js
     │   ├── carts.controller.js
@@ -34,11 +38,16 @@ Utiliza archivos JSON como base de datos local.
     ├── db/
     │   ├── products.json
     │   └── carts.json
-    ├── const/
-    │   └── constantes.js
+    ├── public/
+    │   ├── index.css
+    │   └── index.js
     └── views/
-        ├── layouts/    
+        ├── layouts/
+        │   └── main.handlebars
         ├── partials/
+        │   └── header.handlebars
+        ├── error.handlebars
+        ├── products.handlebars
         └── home.handlebars
 ```
 
@@ -54,3 +63,4 @@ Utiliza archivos JSON como base de datos local.
 ### Rutas para manejo de carritos (`/carts`)
 - **POST /** : Agrega un nuevo carrito.
 - **GET /:cid** : Devuelve un carrito especifico por su ID.
+- **POST /:cid/product/:pid** : Agregar un producto especifico por su ID a un carrito especifico.
