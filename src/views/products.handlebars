@@ -1,0 +1,20 @@
+<section>
+    <h2>Catálogo de Productos</h2>
+    {{#if products}}
+        <div class="product-grid">
+            {{#each products}}
+                <div class="product-card">
+                    <h3>{{title}}</h3>
+                    <p class="description">{{description}}</p>
+                    <div class="details">
+                        <span class="price">${{price}}</span>
+                        <span class="stock">Stock: {{stock}}</span>
+                    </div>
+                    <small>ID: {{id}}</small>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p>No hay productos disponibles en este momento.</p>
+    {{/if}}
+</section>

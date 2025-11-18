@@ -1,5 +1,7 @@
 import express from "express"
 import handlebars from "express-handlebars"
+import http from "http"
+import { Server } from "socket.io"
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import rootRouter from "./routes/root.routes.js"
@@ -12,9 +14,17 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const __publicdir = join(__dirname, 'public')
 
-// Crear servidor
+// Express se encarga de la capa de aplicación
 const app = express()
+// Servidor HTTP nativo de Node.js responde solicitudes que vengan de http://localhost:5000
+const httpserver = http.createServer(app)
+// WebSocket se encarga de la capa de transporte (comunicación en tiempo real) ws://localhost:5000
+const servidorWS = new Server(httpserver)
 
+servidorWS.on("connection", (socket) => {
+    console.log("Nuevo cliente conectado", socket.id)
+    socket.emit("mensajeDesdeServidor", "Hola cliente, te saludo desde el servidor")
+})
 // Configuración más personalizable de Handlebars
 const hbs = handlebars.create({
     extname: '.handlebars', // La extensión de tus archivos de plantilla
@@ -43,6 +53,6 @@ app.use((err, req, res, next) => {
 
 // Iniciar servidor
 
-app.listen(PORT, () => {
+httpserver.listen(PORT, () => {
     console.log(`Servidor ON, corriendo en el puerto ${PORT}`)
 })

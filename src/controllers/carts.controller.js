@@ -1,3 +1,6 @@
+import CartsManager from '../class/CartsManager.js'
+const cartManager = new CartsManager()
+
 export const createCart = async (req, res) => {
     console.log("Crear carrito")
     try {

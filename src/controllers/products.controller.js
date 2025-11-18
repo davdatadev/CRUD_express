@@ -1,15 +1,21 @@
+import ProductsManager from '../class/ProductsManager.js'
+const productManager = new ProductsManager()
 
  export const listProducts = async (req, res) => {
-    console.log("Listar productos")
+    console.log("Listar productos - HTML")
     try{
         const productos = await productManager.leerProductos()
-        res.json({
-            mensaje: "GET",
-            products: productos
+        res.render('products', {
+            titulo: "Catálogo de Productos",
+            products: productos,
+            hasProducts: productos && productos.length > 0 // Variable auxiliar para el #if
         })
     }catch(error){
         console.log("Error")
-        res.status(500).json({ mensaje: "GET", error: "Error al listar los productos" })
+        res.status(500).render('error', { 
+            titulo: "Error", 
+            mensaje: `Error al cargar el listado de productos> ${error.message}`
+        })
     }
 }
 
