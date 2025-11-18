@@ -8,6 +8,7 @@ import rootRouter from "./routes/root.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
 import { PORT } from "./const/constantes.js"
+import { setSocketIO } from "./class/ProductsManager.js"
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -19,12 +20,18 @@ const app = express()
 // Servidor HTTP nativo de Node.js responde solicitudes que vengan de http://localhost:5000
 const httpserver = http.createServer(app)
 // WebSocket se encarga de la capa de transporte (comunicación en tiempo real) ws://localhost:5000
-const servidorWS = new Server(httpserver)
+export const servidorWS = new Server(httpserver)
 
+setSocketIO(servidorWS) // Configurar la instancia de Socket.IO en ProductsManager
+// Eventos de WebSocket
 servidorWS.on("connection", (socket) => {
     console.log("Nuevo cliente conectado", socket.id)
     socket.emit("mensajeDesdeServidor", "Hola cliente, te saludo desde el servidor")
+    socket.on("mensajeDesdeCliente", (data) => {
+        console.log("Mensaje recibido del cliente:", data)
+    })
 })
+
 // Configuración más personalizable de Handlebars
 const hbs = handlebars.create({
     extname: '.handlebars', // La extensión de tus archivos de plantilla
@@ -33,9 +40,9 @@ const hbs = handlebars.create({
     defaultLayout: 'main',
 });
 
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-app.set('views', join(__dirname, 'views'));
+app.engine('handlebars', hbs.engine)
+app.set('view engine', 'handlebars')
+app.set('views', join(__dirname, 'views'))
 
 // Middlewares
 app.use(express.json())

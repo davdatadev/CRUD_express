@@ -4,9 +4,9 @@
     "title": "Escritorio Altura Ajustable 73-118 Cm Electrico",
     "description": "Combinación perfecta de funcionalidad y durabilidad. Sistema anticolisión detecta objetos en la trayectoria para evitar colisiones cuando se gradúa la altura.",
     "code": "OFI-001",
-    "price": 250,
+    "price": 400,
     "status": true,
-    "stock": 15,
+    "stock": 150,
     "category": "Oficina",
     "thumbnails": [
       "images/escritorio-ajustable.jpg"
@@ -88,6 +88,32 @@
     "category": "Oficina",
     "thumbnails": [
       "images/mouse-logitech.jpg"
+    ]
+  },
+  {
+    "id": "1763468617867",
+    "title": "Organizador escritorio",
+    "description": "Ten ordenado todos tus cables con este organizador",
+    "code": "OFI-002",
+    "price": 20,
+    "status": true,
+    "stock": 30,
+    "category": "Oficina",
+    "thumbnails": [
+      "images/organizador-canasta.jpg"
+    ]
+  },
+  {
+    "id": "1763488348894",
+    "title": "Termo aislante",
+    "description": "Aislante",
+    "code": "COC-005",
+    "price": 40,
+    "status": true,
+    "stock": 200,
+    "category": "Cocina",
+    "thumbnails": [
+      "images/termo-aislante.jpg"
     ]
   }
 ]

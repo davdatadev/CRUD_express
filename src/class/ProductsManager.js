@@ -1,6 +1,12 @@
 import fs from "fs/promises"
 import { PRODUCTS_PATH } from "../const/constantes.js"
 
+let socketIOInstance = null;
+
+export const setSocketIO = (ioInstance) => {
+    socketIOInstance = ioInstance;
+}
+
 class ProductsManager {
     constructor(){
         this.products = []
@@ -88,6 +94,10 @@ class ProductsManager {
 
             productos[productIndex] = productoActualizado
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
+            if (socketIOInstance) {
+                const productosActualizados = await this.leerProductos();
+                socketIOInstance.emit("productosActualizados", productosActualizados);
+            }
 
             return productoActualizado
         } catch (error) {
@@ -104,10 +114,15 @@ class ProductsManager {
                 return null
             }
             
-            productoEliminado = productos[productIndex]
+            const productoEliminado = productos[productIndex]
+
             productos.splice(productIndex, 1)
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
 
+            if (socketIOInstance) {
+                const productosActualizados = await this.leerProductos();
+                socketIOInstance.emit("productsUpdate", productosActualizados); 
+            }
             return productoEliminado
         } catch (error) {
             console.error("Error eliminando producto:", error)
