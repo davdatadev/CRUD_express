@@ -26,7 +26,7 @@ const updateProductList = (products) => {
 };
 
 // Escuchar el evento 'productsUpdate' del servidor
-socket.on("productsUpdate", (products) => {
+conexionSocket.on("productsUpdate", (products) => {
     console.log("¡Lista de productos actualizada en tiempo real!");
     updateProductList(products);
 });

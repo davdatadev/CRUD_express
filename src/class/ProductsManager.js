@@ -69,6 +69,9 @@ class ProductsManager {
             productos.push(productoAgregar)
 
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
+            if (socketIOInstance) {
+                socketIOInstance.emit("productsUpdate", productos); 
+            }
             return productoAgregar
 
         }catch(error){
@@ -95,8 +98,9 @@ class ProductsManager {
             productos[productIndex] = productoActualizado
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
             if (socketIOInstance) {
+                console.log("Emitiendo productsUpdate desde ProductsManager")
                 const productosActualizados = await this.leerProductos();
-                socketIOInstance.emit("productosActualizados", productosActualizados);
+                socketIOInstance.emit("productsUpdate", productosActualizados);
             }
 
             return productoActualizado
@@ -120,8 +124,7 @@ class ProductsManager {
             await fs.writeFile(PRODUCTS_PATH, JSON.stringify(productos, null, 2))
 
             if (socketIOInstance) {
-                const productosActualizados = await this.leerProductos();
-                socketIOInstance.emit("productsUpdate", productosActualizados); 
+                socketIOInstance.emit("productsUpdate", productos); 
             }
             return productoEliminado
         } catch (error) {

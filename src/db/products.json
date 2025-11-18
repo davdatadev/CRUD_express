@@ -4,9 +4,9 @@
     "title": "Escritorio Altura Ajustable 73-118 Cm Electrico",
     "description": "Combinación perfecta de funcionalidad y durabilidad. Sistema anticolisión detecta objetos en la trayectoria para evitar colisiones cuando se gradúa la altura.",
     "code": "OFI-001",
-    "price": 400,
+    "price": 350,
     "status": true,
-    "stock": 150,
+    "stock": 450,
     "category": "Oficina",
     "thumbnails": [
       "images/escritorio-ajustable.jpg"
@@ -111,6 +111,19 @@
     "price": 40,
     "status": true,
     "stock": 200,
+    "category": "Cocina",
+    "thumbnails": [
+      "images/termo-aislante.jpg"
+    ]
+  },
+  {
+    "id": "1763507809195",
+    "title": "Termo aislante Acero",
+    "description": "Aislante en acero",
+    "code": "COC-006",
+    "price": 50,
+    "status": true,
+    "stock": 20,
     "category": "Cocina",
     "thumbnails": [
       "images/termo-aislante.jpg"

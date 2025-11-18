@@ -22,7 +22,6 @@ const httpserver = http.createServer(app)
 // WebSocket se encarga de la capa de transporte (comunicación en tiempo real) ws://localhost:5000
 export const servidorWS = new Server(httpserver)
 
-setSocketIO(servidorWS) // Configurar la instancia de Socket.IO en ProductsManager
 // Eventos de WebSocket
 servidorWS.on("connection", (socket) => {
     console.log("Nuevo cliente conectado", socket.id)
@@ -31,6 +30,8 @@ servidorWS.on("connection", (socket) => {
         console.log("Mensaje recibido del cliente:", data)
     })
 })
+
+setSocketIO(servidorWS) // Configurar la instancia de Socket.IO en ProductsManager
 
 // Configuración más personalizable de Handlebars
 const hbs = handlebars.create({
