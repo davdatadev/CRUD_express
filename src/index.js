@@ -2,12 +2,13 @@ import express from "express"
 import handlebars from "express-handlebars"
 import http from "http"
 import { Server } from "socket.io"
+import mongoose from "mongoose"
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import rootRouter from "./routes/root.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
-import { PORT } from "./const/constantes.js"
+import { PORT, DB_URL } from "./const/constantes.js"
 import { setSocketIO } from "./class/ProductsManager.js"
 
 
@@ -59,8 +60,16 @@ app.use((err, req, res, next) => {
     res.status(500).json({ mensaje: "Error interno del servidor" })
 })
 
-// Iniciar servidor
+// Conexión a la base de datos MongoDB
+mongoose.connect(DB_URL)
+    .then(() => {
+        console.log("Conectado a la base de datos MongoDB")
+        // Iniciar servidor
+        httpserver.listen(PORT, () => {
+            console.log(`Servidor ON, corriendo en el puerto ${PORT}`)
+        })
+    })
+    .catch((error) => {
+        console.error("Error al conectar a la base de datos MongoDB:", error)
+    })
 
-httpserver.listen(PORT, () => {
-    console.log(`Servidor ON, corriendo en el puerto ${PORT}`)
-})

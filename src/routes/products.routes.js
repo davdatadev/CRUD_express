@@ -1,12 +1,12 @@
 import express from "express"
 import ProductsManager from '../class/ProductsManager.js'
-import { listProducts, getProductById, createProduct, updateProduct, deleteProduct } from "../controllers/products.controller.js"
+import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from "../controllers/products.controller.js"
 
 const router = express.Router()
 
 const productManager = new ProductsManager()
 
-router.get("/", listProducts)
+router.get("/", getAllProducts)
 
 router.get("/:pid", getProductById)
 

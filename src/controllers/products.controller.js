@@ -1,23 +1,39 @@
 import ProductsManager from '../class/ProductsManager.js'
+import ProductModel from '../models/products.model.js'
 const productManager = new ProductsManager()
 
- export const listProducts = async (req, res) => {
-    console.log("Listar productos - HTML")
+export const getAllProducts = async (req, res) => {
+    console.log("Listar productos - MongoDB")
     try{
-        const productos = await productManager.leerProductos()
+        const productos = await ProductModel.find().lean()
         res.render('products', {
             titulo: "Catálogo de Productos",
             products: productos,
-            hasProducts: productos && productos.length > 0 // Variable auxiliar para el #if
+            hasProducts: productos && productos.length > 0
         })
     }catch(error){
         console.log("Error")
-        res.status(500).render('error', { 
-            titulo: "Error", 
-            mensaje: `Error al cargar el listado de productos> ${error.message}`
-        })
+        res.status(500).json({ mensaje: "GET", error: `Error al consultar los productos> ${error.message}` })
     }
 }
+
+// export const listProducts = async (req, res) => {
+//     console.log("Listar productos - HTML")
+//     try{
+//         const productos = await productManager.leerProductos()
+//         res.render('products', {
+//             titulo: "Catálogo de Productos",
+//             products: productos,
+//             hasProducts: productos && productos.length > 0 // Variable auxiliar para el #if
+//         })
+//     }catch(error){
+//         console.log("Error")
+//         res.status(500).render('error', { 
+//             titulo: "Error", 
+//             mensaje: `Error al cargar el listado de productos> ${error.message}`
+//         })
+//     }
+// }
 
 export const getProductById = async (req, res) => {
     console.log("Buscar producto")
