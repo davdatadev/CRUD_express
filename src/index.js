@@ -40,6 +40,9 @@ const hbs = handlebars.create({
     layoutsDir: join(__dirname, 'views', 'layouts'), // Ruta de layouts
     partialsDir: join(__dirname, 'views', 'partials'), // Ruta de partials
     defaultLayout: 'main',
+    helpers: {
+        eq: function (a, b) { return a === b; } // Helper para comparar
+    }
 });
 
 app.engine('handlebars', hbs.engine)
