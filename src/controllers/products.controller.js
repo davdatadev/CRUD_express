@@ -4,7 +4,7 @@ import ProductModel from '../models/products.model.js'
 export const getAllProducts = async (req, res) => {
     console.log("Listar productos - MongoDB - HTML")
     try{
-        let { page = 1, limit = 5, sort, query } = req.query
+        let { page = 1, limit = 6, sort, query } = req.query
 
         limit = parseInt(limit)
         page = parseInt(page)

@@ -1,14 +1,20 @@
 import express from "express"
-import CartsManager from '../class/CartsManager.js'
-import { createCart, getCartById, addProductToCart } from '../controllers/carts.controller.js'
+import { createCart, getCartById, addProductToCart, updateCart, updateProductQuantity, removeProductFromCart, clearCart } from '../controllers/carts.controller.js'
 
 const router = express.Router()
-const cartManager = new CartsManager()
 
 router.post("/", createCart)
 
 router.get("/:cid", getCartById)
 
 router.post("/:cid/product/:pid", addProductToCart )
+
+router.put("/:cid", updateCart )
+
+router.put("/:cid/product/:pid", updateProductQuantity )
+
+router.delete("/:cid/product/:pid", removeProductFromCart )
+
+router.delete("/:cid", clearCart )
 
 export default router
