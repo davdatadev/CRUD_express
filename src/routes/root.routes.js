@@ -1,8 +1,10 @@
 import express from "express"
-import { rootHandler } from "../controllers/root.controller.js"
+import { rootHandler, productsViewHandler } from "../controllers/root.controller.js"
 
 const router = express.Router()
 
 router.get("/", rootHandler)
+
+router.get("/products", productsViewHandler)
 
 export default router

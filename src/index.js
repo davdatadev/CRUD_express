@@ -9,8 +9,12 @@ import rootRouter from "./routes/root.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
 import { PORT, DB_URL } from "./const/constantes.js"
-import { setSocketIO } from "./class/ProductsManager.js"
 
+let socketIOInstance = null;
+
+export const setSocketIO = (ioInstance) => {
+    socketIOInstance = ioInstance;
+}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -54,8 +58,8 @@ app.use(express.json())
 app.use(express.static(__publicdir))
 
 app.use("/", rootRouter)
-app.use("/products", productsRouter)
-app.use("/carts", cartsRouter)
+app.use("/api/products", productsRouter)
+app.use("/api/carts", cartsRouter)
 
 // Global error handler
 app.use((err, req, res, next) => {

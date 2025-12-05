@@ -1,20 +1,74 @@
-<section>
-    <h2>Catálogo de Productos</h2>
-    {{#if products}}
-        <div class="product-grid">
-            {{#each products}}
-                <div class="product-card">
-                    <h3>{{title}}</h3>
-                    <p class="description">{{description}}</p>
-                    <div class="details">
-                        <span class="price">${{price}}</span>
-                        <span class="stock">Stock: {{stock}}</span>
-                    </div>
-                    <small>ID: {{_id}}</small>
-                </div>
-            {{/each}}
-        </div>
-    {{else}}
-        <p>No hay productos disponibles en este momento.</p>
-    {{/if}}
-</section>
+<main>
+    <header class="home-header">
+        <h1>{{titulo}}</h1>
+        <p>Explora nuestro catálogo completo</p>
+    </header>
+
+    <!-- FORMULARIO DE FILTROS -->
+    <div class="filters-container">
+        <form action="/products" method="GET" class="filters-form">
+            
+            <input type="text" name="category" class="form-control" placeholder="Categoría..." value="{{currentCategory}}">
+
+            <select name="status" class="form-control">
+                <option value="">Estado: Todos</option>
+                <option value="true" {{#if (eq currentStatus 'true')}}selected{{/if}}>Disponible</option>
+                <option value="false" {{#if (eq currentStatus 'false')}}selected{{/if}}>No Disponible</option>
+            </select>
+            
+            <select name="sort" class="form-control">
+                <option value="">Orden: Defecto</option>
+                <option value="asc" {{#if (eq currentSort 'asc')}}selected{{/if}}>Precio: Menor a Mayor</option>
+                <option value="desc" {{#if (eq currentSort 'desc')}}selected{{/if}}>Precio: Mayor a Menor</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="/products" class="btn btn-secondary">Limpiar</a>
+        </form>
+    </div>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <section>
+        {{#if products}}
+            <div class="product-grid">
+                {{#each products}}
+                    <article class="product-card">
+                        <div>
+                            <h3>{{title}}</h3>
+                            <p class="description">{{description}}</p>
+                            <small>Categoría: {{category}}</small>
+                        </div>
+                        <div class="details">
+                            <span class="price">${{price}}</span>
+                            <span class="stock" style="color: {{#if status}}green{{else}}red{{/if}}">
+                                {{#if status}}Disponible{{else}}No disp.{{/if}}
+                            </span>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 10px;">Agregar al Carrito</button>
+                    </article>
+                {{/each}}
+            </div>
+        {{else}}
+            <div style="text-align: center; padding: 2rem;">
+                <h3>No hay productos.</h3>
+            </div>
+        {{/if}}
+    </section>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+        {{#if hasPrevPage}}
+            <a href="/products{{prevLink}}" class="pagination-link">
+                <button class="btn btn-primary">&laquo; Anterior</button>
+            </a>
+        {{/if}}
+
+        <span>Página {{page}} de {{totalPages}}</span>
+
+        {{#if hasNextPage}}
+            <a href="/products{{nextLink}}" class="pagination-link">
+                <button class="btn btn-primary">Siguiente &raquo;</button>
+            </a>
+        {{/if}}
+    </div>
+</main>
