@@ -1,3 +1,75 @@
 <main>
-    <h1>{{bienvenida}}</h1>
+    <header class="home-header">
+        <h1>{{bienvenida}}</h1>
+    </header>
+
+    <!-- FORMULARIO DE FILTROS -->
+    <div class="filters-container">
+        <form action="/" method="GET" class="filters-form">
+            
+            <!-- Campo de búsqueda (Query) -->
+            <input 
+                type="text" 
+                name="query" 
+                class="form-control"
+                placeholder="Categoría o Status (true/false)" 
+                value="{{currentQuery}}"
+            >
+            
+            <!-- Selector de Ordenamiento -->
+            <select name="sort" class="form-control">
+                <option value="">Orden por defecto</option>
+                <option value="asc" {{#if (eq currentSort 'asc')}}selected{{/if}}>Precio: Menor a Mayor</option>
+                <option value="desc" {{#if (eq currentSort 'desc')}}selected{{/if}}>Precio: Mayor a Menor</option>
+            </select>
+
+            <!-- Botones de acción -->
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="/" class="btn btn-secondary">Limpiar</a>
+        </form>
+    </div>
+
+    <!-- LISTA DE PRODUCTOS (GRID) -->
+    <section>
+        {{#if products}}
+            <div class="product-grid">
+                {{#each products}}
+                    <article class="product-card">
+                        <div>
+                            <h3>{{title}}</h3>
+                            <p class="description">{{description}}</p>
+                            <small>Categoría: {{category}}</small>
+                        </div>
+                        
+                        <div class="details">
+                            <span class="price">${{price}}</span>
+                            <span class="stock">Stock: {{stock}}</span>
+                        </div>
+                    </article>
+                {{/each}}
+            </div>
+        {{else}}
+            <div style="text-align: center; padding: 2rem;">
+                <h3>No se encontraron productos con esos criterios.</h3>
+                <p>Intenta una búsqueda diferente.</p>
+            </div>
+        {{/if}}
+    </section>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+        {{#if hasPrevPage}}
+            <a href="{{prevLink}}" class="pagination-link">
+                <button class="btn btn-primary">&laquo; Anterior</button>
+            </a>
+        {{/if}}
+
+        <span>Página {{page}} de {{totalPages}}</span>
+
+        {{#if hasNextPage}}
+            <a href="{{nextLink}}" class="pagination-link">
+                <button class="btn btn-primary">Siguiente &raquo;</button>
+            </a>
+        {{/if}}
+    </div>
 </main>
